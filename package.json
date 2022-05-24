@@ -10,23 +10,46 @@
     "@types/node": "^16.11.36",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "apollo-server": "^3.7.0",
+    "graphql": "^16.5.0",
+    "graphql-relay": "^0.10.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-relay": "^13.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.6.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "api:start": "ts-node api/index.ts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "relay": "relay-compiler",
+    "relay:watch": "npm run relay --watch",
+    "dev": "run-p relay:watch start",
+    "gen:schema": "get-graphql-schema http://localhost:4000/graphql > ./schema/__generated__/schema.graphql"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
+    ],
+    "ignorePatterns": [
+      "/node_modules",
+      "/build",
+      "/public/build"
     ]
+  },
+  "prettier": {},
+  "relay": {
+    "src": "./src",
+    "schema": "./schema/__generated__/schema.graphql",
+    "language": "typescript",
+    "artifactDirectory": "./src/__generated__",
+    "eagerEsModules": true
   },
   "browserslist": {
     "production": [
@@ -39,5 +62,23 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.0",
+    "@babel/node": "^7.17.10",
+    "@types/react-relay": "^13.0.2",
+    "@types/relay-compiler": "^8.0.2",
+    "@types/relay-runtime": "^13.0.3",
+    "babel-plugin-import-graphql": "^2.8.1",
+    "babel-plugin-relay": "^13.2.0",
+    "babel-preset-react-app": "^10.0.1",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "get-graphql-schema": "^2.1.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "relay-compiler": "^13.2.0",
+    "ts-node": "^10.8.0"
   }
 }

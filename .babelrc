@@ -1,0 +1,4 @@
+{
+  "plugins": ["relay", "import-graphql"],
+  "presets": ["react-app"]
+}
