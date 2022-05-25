@@ -21,15 +21,16 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "api:start": "ts-node api/index.ts",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "gen:schema": "get-graphql-schema http://localhost:4000/graphql > ./schema/__generated__/schema.graphql",
     "relay": "relay-compiler",
     "relay:watch": "npm run relay --watch",
-    "dev": "run-p relay:watch start",
-    "gen:schema": "get-graphql-schema http://localhost:4000/graphql > ./schema/__generated__/schema.graphql"
+    "api:start": "ts-node api/index.ts",
+    "api:dev": "nodemon --watch ./api --ext .ts --exec npm run api:start",
+    "web:start": "react-scripts start",
+    "web:dev": "run-p relay:watch start",
+    "web:build": "react-scripts build",
+    "web:test": "react-scripts test",
+    "web:eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -76,6 +77,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
     "get-graphql-schema": "^2.1.2",
+    "nodemon": "^2.0.16",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
     "relay-compiler": "^13.2.0",
