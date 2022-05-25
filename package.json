@@ -11,14 +11,22 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "apollo-server": "^3.7.0",
+    "argon2": "^0.28.5",
+    "cookie": "^0.5.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "envalid": "^7.3.1",
     "graphql": "^16.5.0",
     "graphql-relay": "^0.10.0",
+    "jsonwebtoken": "^8.5.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-relay": "^13.2.0",
     "react-scripts": "5.0.1",
+    "tiny-invariant": "^1.2.0",
     "typescript": "^4.6.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "gen:schema": "get-graphql-schema http://localhost:4000/graphql > ./schema/__generated__/schema.graphql",
@@ -27,7 +35,7 @@
     "api:start": "ts-node api/index.ts",
     "api:dev": "nodemon --watch ./api --ext .ts --exec npm run api:start",
     "web:start": "react-scripts start",
-    "web:dev": "run-p relay:watch start",
+    "web:dev": "run-p relay:watch web:start",
     "web:build": "react-scripts build",
     "web:test": "react-scripts test",
     "web:eject": "react-scripts eject"
@@ -67,6 +75,8 @@
   "devDependencies": {
     "@babel/core": "^7.18.0",
     "@babel/node": "^7.17.10",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/react-relay": "^13.0.2",
     "@types/relay-compiler": "^8.0.2",
     "@types/relay-runtime": "^13.0.3",

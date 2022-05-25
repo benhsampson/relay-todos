@@ -1,5 +1,4 @@
 import {
-  GraphQLID,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -9,10 +8,11 @@ import {
   connectionArgs,
   ConnectionArguments,
   connectionFromArray,
+  globalIdField,
 } from "graphql-relay";
 
 import { nodeInterface } from ".";
-import { getTodos, USER_ID } from "../db";
+import { getTodos, User } from "../db";
 import { TodosConnection } from "./Todo.node";
 
 type Status = "any" | "completed";
@@ -20,9 +20,13 @@ type Status = "any" | "completed";
 export const GraphQLUser = new GraphQLObjectType({
   name: "User",
   fields: {
-    id: {
-      type: new GraphQLNonNull(GraphQLID),
-      resolve: () => USER_ID,
+    id: globalIdField("User"),
+    userDbId: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (self: User) => self.id,
+    },
+    username: {
+      type: new GraphQLNonNull(GraphQLString),
     },
     todos: {
       type: TodosConnection,
@@ -34,17 +38,18 @@ export const GraphQLUser = new GraphQLObjectType({
         ...connectionArgs,
       },
       resolve: async (
-        _,
+        self: User,
         { status, ...args }: ConnectionArguments & { status: Status }
-      ) => connectionFromArray([...(await getTodos(status))], args),
+      ) => connectionFromArray([...(await getTodos(self.id, status))], args),
     },
     totalCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: async () => (await getTodos()).length,
+      resolve: async (self: User) => (await getTodos(self.id)).length,
     },
     completedCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: async () => (await getTodos("completed")).length,
+      resolve: async (self: User) =>
+        (await getTodos(self.id, "completed")).length,
     },
   },
   interfaces: [nodeInterface],

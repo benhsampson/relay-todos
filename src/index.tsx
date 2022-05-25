@@ -10,7 +10,7 @@ import * as TodoAppQuery from "./__generated__/TodoAppQuery.graphql";
 const initialQueryRef = loadQuery<TodoAppQuery.TodoAppQuery>(
   TodoAppEnvironment,
   TodoAppQuery.default,
-  { userId: "me" }
+  { userId: "0" }
 );
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

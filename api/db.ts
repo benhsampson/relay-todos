@@ -12,35 +12,53 @@ export class Todo {
 
 export class User {
   id: string;
+  username: string;
+  password: string;
 
-  constructor(id: string) {
+  constructor(id: string, username: string, password: string) {
     this.id = id;
+    this.username = username;
+    this.password = password;
   }
 }
 
-export const USER_ID = "me";
-
-const usersById: Record<string, User> = { [USER_ID]: new User(USER_ID) };
+const usersById: Record<string, User> = {};
 
 const todosById: Record<string, Todo> = {};
 
-const todoIdsByUser: Record<string, string[]> = { [USER_ID]: [] };
+const todoIdsByUser: Record<string, string[]> = {};
 
 let nextTodoId = 0;
+let nextUserId = 0;
 
 const delay = async (delay = 1000) =>
   await new Promise<void>((resolve) => setTimeout(resolve, delay));
 
+export const addUser = async (username: string, password: string) => {
+  await delay();
+  const id = `${nextUserId++}`;
+  if (usersById[id]) throw new Error("User already exists");
+  const user = new User(id, username, password);
+  usersById[user.id] = user;
+  todoIdsByUser[id] = [];
+  return user.id;
+};
+
 export const getUserOrThrow = async (id: string) => {
   await delay();
+  console.log(usersById, id);
   return usersById[id];
 };
 
-export const addTodo = async (text: string, complete: boolean) => {
+export const addTodo = async (
+  text: string,
+  userId: string,
+  complete: boolean
+) => {
   await delay();
   const todo = new Todo(`${nextTodoId++}`, text, complete);
   todosById[todo.id] = todo;
-  todoIdsByUser[USER_ID] = (todoIdsByUser[USER_ID] || []).concat(todo.id);
+  todoIdsByUser[userId] = (todoIdsByUser[userId] || []).concat(todo.id);
   return todo.id;
 };
 
@@ -53,9 +71,9 @@ export const getTodo = async (id: string) => {
   return getTodoOrThrow(id);
 };
 
-export const getTodos = async (status = "any") => {
+export const getTodos = async (userId: string, status = "any") => {
   await delay();
-  const todosForUser = todoIdsByUser[USER_ID].map(getTodoOrThrow);
+  const todosForUser = todoIdsByUser[userId].map(getTodoOrThrow);
   if (status === "any") return todosForUser;
   return todosForUser.filter(
     (todo) => todo.complete === (status === "completed")

@@ -2,6 +2,7 @@
 import graphql from "babel-plugin-relay/macro";
 import { Suspense, useCallback } from "react";
 import { PreloadedQuery, usePreloadedQuery } from "react-relay";
+import invariant from "tiny-invariant";
 
 import { TodoAppQuery } from "./__generated__/TodoAppQuery.graphql";
 import TodoList from "./TodoList";
@@ -18,6 +19,7 @@ function TodoApp(props: Props) {
       query TodoAppQuery($userId: String!) {
         user(id: $userId) {
           id
+          userDbId
           totalCount
           completedCount
           ...TodoList_user
@@ -30,8 +32,11 @@ function TodoApp(props: Props) {
   const [addTodo] = useAddTodoMutation();
 
   const handleTextInputSave = useCallback(
-    (text: string) => addTodo(text, data.user!.id),
-    [addTodo, data.user!.id]
+    (text: string) => {
+      invariant(data.user);
+      addTodo(text, data.user.id, data.user.userDbId);
+    },
+    [addTodo, data.user]
   );
 
   return (

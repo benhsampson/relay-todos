@@ -29,9 +29,19 @@ type ChangeTodoStatusPayload {
   clientMutationId: String
 }
 
+input CreateUserInput {
+  username: String!
+  password: String!
+}
+
+type CreateUserPayload {
+  user: User
+}
+
 type Mutation {
   addTodo(input: AddTodoInput!): AddTodoPayload
   changeTodoStatus(input: ChangeTodoStatusInput!): ChangeTodoStatusPayload
+  createUser(input: CreateUserInput, dryRun: Boolean = false): CreateUserPayload
 }
 
 """An object with an ID"""
@@ -57,7 +67,7 @@ type PageInfo {
 
 type Query {
   """Fetches a user"""
-  user(id: String): User
+  user(id: String!): User
 }
 
 type Todo implements Node {
@@ -86,7 +96,10 @@ type TodoEdge {
 }
 
 type User implements Node {
+  """The ID of an object"""
   id: ID!
+  userDbId: String!
+  username: String!
   todos(
     status: String = "any"
 

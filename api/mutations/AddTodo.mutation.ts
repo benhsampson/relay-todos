@@ -29,13 +29,20 @@ const AddTodoMutation = mutationWithClientMutationId({
     text: { type: new GraphQLNonNull(GraphQLString) },
     userId: { type: new GraphQLNonNull(GraphQLID) },
   } as Record<keyof Input, GraphQLInputFieldConfig>,
+  mutateAndGetPayload: async ({ text, userId }: Input) => {
+    const todoId = await addTodo(text, userId, false);
+    return { todoId, userId } as Payload;
+  },
   outputFields: {
     todoEdge: {
       type: new GraphQLNonNull(GraphQLTodoEdge),
-      resolve: async ({ todoId }: Payload) => {
+      resolve: async ({ todoId, userId }: Payload) => {
         const todo = await getTodo(todoId);
         return {
-          cursor: cursorForObjectInConnection([...(await getTodos())], todo),
+          cursor: cursorForObjectInConnection(
+            [...(await getTodos(userId))],
+            todo
+          ),
           node: todo,
         };
       },
@@ -44,10 +51,6 @@ const AddTodoMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLUser),
       resolve: ({ userId }: Payload) => getUserOrThrow(userId),
     },
-  },
-  mutateAndGetPayload: async ({ text, userId }: Input) => {
-    const todoId = await addTodo(text, false);
-    return { todoId, userId } as Payload;
   },
 });
 
