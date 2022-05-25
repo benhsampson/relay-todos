@@ -28,13 +28,6 @@ const todoIdsByUser: Record<string, string[]> = { [USER_ID]: [] };
 
 let nextTodoId = 0;
 
-// const withDelay = async <F extends (...args: any) => any>(
-//   fn: F,
-//   delay = 1000
-// ) => {
-//  await Promise.resolve(setTimeout(fn, delay));
-// };
-
 const delay = async (delay = 1000) =>
   await new Promise<void>((resolve) => setTimeout(resolve, delay));
 
