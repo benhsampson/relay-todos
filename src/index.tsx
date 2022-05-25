@@ -1,22 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { loadQuery, RelayEnvironmentProvider } from "react-relay";
+import { RelayEnvironmentProvider } from "react-relay";
+import { BrowserRouter } from "react-router-dom";
 
 import reportWebVitals from "./reportWebVitals";
-import TodoAppWrapper from "./TodoApp";
+import TodoApp from "./TodoApp";
 import TodoAppEnvironment from "./TodoAppEnvironment";
-import * as TodoAppQuery from "./__generated__/TodoAppQuery.graphql";
-
-const initialQueryRef = loadQuery<TodoAppQuery.TodoAppQuery>(
-  TodoAppEnvironment,
-  TodoAppQuery.default,
-  { userId: "0" }
-);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RelayEnvironmentProvider environment={TodoAppEnvironment}>
-      <TodoAppWrapper initialQueryRef={initialQueryRef} />
+      <BrowserRouter>
+        <TodoApp />
+      </BrowserRouter>
     </RelayEnvironmentProvider>
   </React.StrictMode>
 );

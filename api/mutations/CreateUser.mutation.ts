@@ -52,7 +52,6 @@ const CreateUserMutation: GraphQLFieldConfig<User, Context, Args> = {
 
     const userId = await addUser(args.input.username, args.input.password);
 
-    console.log("?");
     ctx.signIn(userId);
 
     const user = await getUserOrThrow(userId);

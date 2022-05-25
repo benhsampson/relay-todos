@@ -1,17 +1,18 @@
-import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from "graphql";
+import { GraphQLFieldConfig } from "graphql";
+import invariant from "tiny-invariant";
 
 import { getUserOrThrow, User } from "../db";
+import { Context } from "../lib/Context";
 import { GraphQLUser } from "../nodes/User.node";
 
-type UserQueryInput = { id: string };
-
-const UserQuery: GraphQLFieldConfig<User, {}> = {
+const UserQuery: GraphQLFieldConfig<User, Context> = {
   description: "Fetches a user",
   type: GraphQLUser,
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLString) },
+  resolve: async (_, __, ctx) => {
+    invariant(ctx.userId, "Missing user ID");
+    console.log(ctx.userId);
+    return await getUserOrThrow(ctx.userId);
   },
-  resolve: async (_, { id }: UserQueryInput) => await getUserOrThrow(id),
 };
 
 export default UserQuery;

@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 
 import env from "./env";
 import { Context, ContextParams } from "./lib/Context";
-import { createIdToken } from "./lib/jwt";
+import { createIdToken, verifyIdToken } from "./lib/jwt";
 
 import Schema from "./schema";
 
@@ -27,7 +27,11 @@ const context: ContextFunction<ContextParams, Context> = async ({
         maxAge: env.JWT_EXPIRES,
       });
     },
-    userId: req.cookies && req.cookies[env.JWT_COOKIE],
+    userId: req.cookies
+      ? req.cookies[env.JWT_COOKIE]
+        ? verifyIdToken(req.cookies[env.JWT_COOKIE]).sub
+        : undefined
+      : undefined,
   };
 };
 

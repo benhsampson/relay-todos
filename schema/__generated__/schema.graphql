@@ -64,8 +64,10 @@ type PageInfo {
 }
 
 type Query {
+  authenticated: Boolean!
+
   """Fetches a user"""
-  user(id: String!): User
+  user: User
 }
 
 type Todo implements Node {
@@ -96,7 +98,6 @@ type TodoEdge {
 type User implements Node {
   """The ID of an object"""
   id: ID!
-  userDbId: String!
   username: String!
   todos(
     status: String = "any"

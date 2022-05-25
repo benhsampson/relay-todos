@@ -1,61 +1,26 @@
-// @ts-ignore
-import graphql from "babel-plugin-relay/macro";
-import { Suspense, useCallback } from "react";
-import { PreloadedQuery, usePreloadedQuery } from "react-relay";
-import invariant from "tiny-invariant";
+import { Route, Routes } from "react-router-dom";
+import CreateUser from "./CreateUser";
+import Home from "./Home";
+import RequireAuth from "./RequireAuth";
 
-import { TodoAppQuery } from "./__generated__/TodoAppQuery.graphql";
-import TodoList from "./TodoList";
-import useAddTodoMutation from "./useAddTodoMutation";
-import TodoTextInput from "./TodoTextInput";
-
-type Props = {
-  initialQueryRef: PreloadedQuery<TodoAppQuery>;
-};
-
-function TodoApp(props: Props) {
-  const data = usePreloadedQuery(
-    graphql`
-      query TodoAppQuery($userId: String!) {
-        user(id: $userId) {
-          id
-          totalCount
-          completedCount
-          ...TodoList_user
-        }
-      }
-    `,
-    props.initialQueryRef
-  );
-
-  const [addTodo] = useAddTodoMutation();
-
-  const handleTextInputSave = useCallback(
-    (text: string) => {
-      invariant(data.user);
-      addTodo(text, data.user.id);
-    },
-    [addTodo, data.user]
-  );
-
+export default function TodoApp() {
   return (
     <div>
       <header>
-        <h1>
-          todos @{data.user!.id} ({data.user?.completedCount}/
-          {data.user?.totalCount})
-        </h1>
+        <h1>todos!</h1>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route path="/create-user" element={<CreateUser />} />
+          <Route path="/sign-in" element={<></>} />
+        </Routes>
       </header>
-      <TodoTextInput onSave={handleTextInputSave} />
-      <TodoList user={data.user!} />
     </div>
-  );
-}
-
-export default function TodoAppWrapper(props: Props) {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <TodoApp {...props} />
-    </Suspense>
   );
 }
