@@ -1,5 +1,4 @@
 import {
-  GraphQLID,
   GraphQLInputFieldConfig,
   GraphQLNonNull,
   GraphQLString,
@@ -8,14 +7,15 @@ import {
   cursorForObjectInConnection,
   mutationWithClientMutationId,
 } from "graphql-relay";
+import invariant from "tiny-invariant";
 
 import { addTodo, getTodo, getTodos, getUserOrThrow } from "../db";
+import { Context } from "../lib/Context";
 import { GraphQLTodoEdge } from "../nodes/Todo.node";
 import { GraphQLUser } from "../nodes/User.node";
 
 type Input = {
   text: string;
-  userId: string;
 };
 
 type Payload = {
@@ -27,11 +27,11 @@ const AddTodoMutation = mutationWithClientMutationId({
   name: "AddTodo",
   inputFields: {
     text: { type: new GraphQLNonNull(GraphQLString) },
-    userId: { type: new GraphQLNonNull(GraphQLID) },
   } as Record<keyof Input, GraphQLInputFieldConfig>,
-  mutateAndGetPayload: async ({ text, userId }: Input) => {
-    const todoId = await addTodo(text, userId, false);
-    return { todoId, userId } as Payload;
+  mutateAndGetPayload: async ({ text }: Input, ctx: Context) => {
+    invariant(ctx.userId);
+    const todoId = await addTodo(text, ctx.userId, false);
+    return { todoId, userId: ctx.userId } as Payload;
   },
   outputFields: {
     todoEdge: {

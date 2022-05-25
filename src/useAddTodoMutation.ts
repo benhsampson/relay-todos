@@ -54,8 +54,8 @@ export default function useAddTodoMutation() {
   const [commit] = useMutation<useAddTodoMutationType>(mutation);
   return [
     useCallback(
-      (text: string, userId: string, userDbId: string) => {
-        const input: AddTodoInput = { text, userId: userDbId };
+      (text: string, userId: string) => {
+        const input: AddTodoInput = { text };
         return commit({
           variables: {
             input,

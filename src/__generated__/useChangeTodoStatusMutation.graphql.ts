@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9c38754128539eb324afd129a4d95375>>
+ * @generated SignedSource<<16fdf14b953cc6fc652f42075daac9e4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,6 @@ import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type ChangeTodoStatusInput = {
   complete: boolean;
   id: string;
-  userId: string;
   clientMutationId?: string | null;
 };
 export type useChangeTodoStatusMutation$variables = {

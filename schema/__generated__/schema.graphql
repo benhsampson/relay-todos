@@ -6,7 +6,6 @@ directive @specifiedBy(
 
 input AddTodoInput {
   text: String!
-  userId: ID!
   clientMutationId: String
 }
 
@@ -19,7 +18,6 @@ type AddTodoPayload {
 input ChangeTodoStatusInput {
   complete: Boolean!
   id: ID!
-  userId: ID!
   clientMutationId: String
 }
 

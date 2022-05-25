@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ac7f3de2f3ca4db48c6fcf2cefdf355>>
+ * @generated SignedSource<<4cb7c5b08d82ca81d5efb8c3087c9048>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type TodoAppQuery$variables = {
 export type TodoAppQuery$data = {
   readonly user: {
     readonly id: string;
-    readonly userDbId: string;
     readonly totalCount: number;
     readonly completedCount: number;
     readonly " $fragmentSpreads": FragmentRefs<"TodoList_user">;
@@ -53,24 +52,17 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "userDbId",
+  "name": "totalCount",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "totalCount",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "completedCount",
   "storageKey": null
 },
-v6 = [
+v5 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -95,7 +87,6 @@ return {
           (v2/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
-          (v5/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -125,10 +116,9 @@ return {
           (v2/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
-          (v5/*: any*/),
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v5/*: any*/),
             "concreteType": "TodoConnection",
             "kind": "LinkedField",
             "name": "todos",
@@ -215,7 +205,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v5/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "TodoList_todos",
@@ -228,16 +218,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "34ed35ff62ff2628fd920487d638d5c9",
+    "cacheID": "9b412f7b51963657d8e5c12302a5b778",
     "id": null,
     "metadata": {},
     "name": "TodoAppQuery",
     "operationKind": "query",
-    "text": "query TodoAppQuery(\n  $userId: String!\n) {\n  user(id: $userId) {\n    id\n    userDbId\n    totalCount\n    completedCount\n    ...TodoList_user\n  }\n}\n\nfragment TodoList_user on User {\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  id\n  text\n  complete\n}\n\nfragment Todo_user on User {\n  id\n  userDbId\n  completedCount\n}\n"
+    "text": "query TodoAppQuery(\n  $userId: String!\n) {\n  user(id: $userId) {\n    id\n    totalCount\n    completedCount\n    ...TodoList_user\n  }\n}\n\nfragment TodoList_user on User {\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  id\n  text\n  complete\n}\n\nfragment Todo_user on User {\n  id\n  completedCount\n}\n"
   }
 };
 })();
 
-(node as any).hash = "80bcb455d8eb3290039971c929f91bc5";
+(node as any).hash = "c6c7073a18e9fae98d40e1c1f48e9da8";
 
 export default node;

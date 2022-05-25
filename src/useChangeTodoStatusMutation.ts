@@ -30,7 +30,6 @@ export default function useChangeTodoStatusMutation() {
         complete: boolean;
         todoId: string;
         userId: string;
-        userDbId: string;
         completedCount: number;
       }) => {
         return commit({
@@ -38,7 +37,6 @@ export default function useChangeTodoStatusMutation() {
             input: {
               complete: input.complete,
               id: input.todoId,
-              userId: input.userDbId,
             },
           },
           optimisticResponse: {

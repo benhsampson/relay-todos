@@ -19,7 +19,6 @@ function TodoApp(props: Props) {
       query TodoAppQuery($userId: String!) {
         user(id: $userId) {
           id
-          userDbId
           totalCount
           completedCount
           ...TodoList_user
@@ -34,7 +33,7 @@ function TodoApp(props: Props) {
   const handleTextInputSave = useCallback(
     (text: string) => {
       invariant(data.user);
-      addTodo(text, data.user.id, data.user.userDbId);
+      addTodo(text, data.user.id);
     },
     [addTodo, data.user]
   );

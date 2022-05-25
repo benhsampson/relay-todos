@@ -28,7 +28,6 @@ export default function Todo(props: Props) {
     graphql`
       fragment Todo_user on User {
         id
-        userDbId
         completedCount
       }
     `,
@@ -42,11 +41,10 @@ export default function Todo(props: Props) {
       changeTodoStatus({
         complete: e.currentTarget.checked,
         userId: user.id,
-        userDbId: user.userDbId,
         todoId: todo.id,
         completedCount: user.completedCount,
       }),
-    [changeTodoStatus, user.id, user.userDbId, todo.id, user.completedCount]
+    [changeTodoStatus, user.id, todo.id, user.completedCount]
   );
 
   return (

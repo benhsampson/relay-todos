@@ -21,10 +21,6 @@ export const GraphQLUser = new GraphQLObjectType({
   name: "User",
   fields: {
     id: globalIdField("User"),
-    userDbId: {
-      type: new GraphQLNonNull(GraphQLString),
-      resolve: (self: User) => self.id,
-    },
     username: {
       type: new GraphQLNonNull(GraphQLString),
     },

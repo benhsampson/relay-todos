@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5d959d7ba9f77ea1c573c0fd700976ab>>
+ * @generated SignedSource<<ab3fd40aea7c62350546bd209cb456e6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,6 @@
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type AddTodoInput = {
   text: string;
-  userId: string;
   clientMutationId?: string | null;
 };
 export type useAddTodoMutation$variables = {

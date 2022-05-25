@@ -13,7 +13,10 @@ import { createIdToken } from "./lib/jwt";
 
 import Schema from "./schema";
 
-const context: ContextFunction<ContextParams, Context> = async ({ res }) => {
+const context: ContextFunction<ContextParams, Context> = async ({
+  req,
+  res,
+}) => {
   return {
     signIn: (userId) => {
       const token = createIdToken(userId);
@@ -24,6 +27,7 @@ const context: ContextFunction<ContextParams, Context> = async ({ res }) => {
         maxAge: env.JWT_EXPIRES,
       });
     },
+    userId: req.cookies && req.cookies[env.JWT_COOKIE],
   };
 };
 
@@ -33,8 +37,8 @@ const context: ContextFunction<ContextParams, Context> = async ({ res }) => {
   const server = new ApolloServer({
     schema: Schema,
     context,
-    csrfPrevention: true,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    csrfPrevention: true,
   });
   await server.start();
   app.use(cookieParser());
