@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c1a5188806ffa040b92c11db3e3a5d53>>
+ * @generated SignedSource<<5d959d7ba9f77ea1c573c0fd700976ab>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,12 +20,16 @@ export type useAddTodoMutation$variables = {
 export type useAddTodoMutation$data = {
   readonly addTodo: {
     readonly todoEdge: {
+      readonly cursor: string;
       readonly node: {
         readonly id: string;
         readonly text: string;
         readonly complete: boolean;
       } | null;
-      readonly cursor: string;
+    };
+    readonly user: {
+      readonly id: string;
+      readonly totalCount: number;
     };
   } | null;
 };
@@ -42,7 +46,14 @@ var v0 = [
     "name": "input"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": [
@@ -68,18 +79,19 @@ v1 = [
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "cursor",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Todo",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
+              (v1/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -96,12 +108,24 @@ v1 = [
               }
             ],
             "storageKey": null
-          },
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "user",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "cursor",
+            "name": "totalCount",
             "storageKey": null
           }
         ],
@@ -117,7 +141,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useAddTodoMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -126,19 +150,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useAddTodoMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "d6e15cd24240224bf29927f3f47cf1a7",
+    "cacheID": "d964115387f098a404ee34503e1e03dd",
     "id": null,
     "metadata": {},
     "name": "useAddTodoMutation",
     "operationKind": "mutation",
-    "text": "mutation useAddTodoMutation(\n  $input: AddTodoInput!\n) {\n  addTodo(input: $input) {\n    todoEdge {\n      node {\n        id\n        text\n        complete\n      }\n      cursor\n    }\n  }\n}\n"
+    "text": "mutation useAddTodoMutation(\n  $input: AddTodoInput!\n) {\n  addTodo(input: $input) {\n    todoEdge {\n      cursor\n      node {\n        id\n        text\n        complete\n      }\n    }\n    user {\n      id\n      totalCount\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "878091e00c672a79812e2ff62bcb947f";
+(node as any).hash = "72c5595510de05731645da61249e211b";
 
 export default node;

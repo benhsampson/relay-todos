@@ -70,6 +70,7 @@ export const getTodos = async (status = "any") => {
 };
 
 export const changeTodoStatus = async (id: string, complete: boolean) => {
-  const todo = await getTodoOrThrow(id);
+  await delay();
+  const todo = getTodoOrThrow(id);
   todo.complete = complete;
 };

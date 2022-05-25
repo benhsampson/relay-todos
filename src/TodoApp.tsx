@@ -18,6 +18,8 @@ function TodoApp(props: Props) {
       query TodoAppQuery($userId: String!) {
         user(id: $userId) {
           id
+          totalCount
+          completedCount
           ...TodoList_user
         }
       }
@@ -35,7 +37,10 @@ function TodoApp(props: Props) {
   return (
     <div>
       <header>
-        <h1>todos {data.user!.id}</h1>
+        <h1>
+          todos @{data.user!.id} ({data.user?.completedCount}/
+          {data.user?.totalCount})
+        </h1>
       </header>
       <TodoTextInput onSave={handleTextInputSave} />
       <TodoList user={data.user!} />

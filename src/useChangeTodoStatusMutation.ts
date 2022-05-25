@@ -2,7 +2,10 @@
 import graphql from "babel-plugin-relay/macro";
 import { useCallback } from "react";
 import { useMutation } from "react-relay";
-import type { useChangeTodoStatusMutation as useChangeTodoStatusMutationType } from "./__generated__/useChangeTodoStatusMutation.graphql";
+import type {
+  useChangeTodoStatusMutation as useChangeTodoStatusMutationType,
+  useChangeTodoStatusMutation$data,
+} from "./__generated__/useChangeTodoStatusMutation.graphql";
 
 const mutation = graphql`
   mutation useChangeTodoStatusMutation($input: ChangeTodoStatusInput!) {
@@ -23,7 +26,12 @@ export default function useChangeTodoStatusMutation() {
   const [commit] = useMutation<useChangeTodoStatusMutationType>(mutation);
   return [
     useCallback(
-      (input: { complete: boolean; todoId: string; userId: string }) => {
+      (input: {
+        complete: boolean;
+        todoId: string;
+        userId: string;
+        completedCount: number;
+      }) => {
         return commit({
           variables: {
             input: {
@@ -32,6 +40,20 @@ export default function useChangeTodoStatusMutation() {
               userId: input.userId,
             },
           },
+          optimisticResponse: {
+            changeTodoStatus: {
+              todo: {
+                complete: input.complete,
+                id: input.todoId,
+              },
+              user: {
+                id: input.userId,
+                completedCount: input.complete
+                  ? input.completedCount + 1
+                  : input.completedCount - 1,
+              },
+            },
+          } as useChangeTodoStatusMutation$data,
         });
       },
       [commit]

@@ -1,7 +1,7 @@
 // @ts-ignore
 import graphql from "babel-plugin-relay/macro";
 import { useCallback } from "react";
-import type { RecordSourceSelectorProxy } from "relay-runtime";
+import type { RecordProxy, RecordSourceSelectorProxy } from "relay-runtime";
 import { ConnectionHandler } from "relay-runtime";
 import { useMutation } from "react-relay";
 
@@ -15,16 +15,40 @@ const mutation = graphql`
   mutation useAddTodoMutation($input: AddTodoInput!) {
     addTodo(input: $input) {
       todoEdge {
+        cursor
         node {
           id
           text
           complete
         }
-        cursor
+      }
+      user {
+        id
+        totalCount
       }
     }
   }
 `;
+
+let tempId = 0;
+
+const sharedUpdater = (
+  store: RecordSourceSelectorProxy<useAddTodoMutation$data>,
+  userId: string,
+  newEdge: RecordProxy
+) => {
+  // get query record to update
+  const userProxy = store.get(userId);
+  if (!userProxy) return;
+
+  // get connection record and add edge
+  const connection = ConnectionHandler.getConnection(
+    userProxy,
+    "TodoList_todos"
+  );
+  if (!connection) return;
+  ConnectionHandler.insertEdgeAfter(connection, newEdge);
+};
 
 export default function useAddTodoMutation() {
   const [commit] = useMutation<useAddTodoMutationType>(mutation);
@@ -50,18 +74,30 @@ export default function useAddTodoMutation() {
             const newEdge = payload.getLinkedRecord("todoEdge");
             if (!newEdge) return;
 
-            // get query record to update
+            sharedUpdater(store, userId, newEdge);
+          },
+
+          // if we can't statically predict what the server response will be,
+          // provide an optimisticUpdater function
+          optimisticUpdater: (
+            store: RecordSourceSelectorProxy<useAddTodoMutation$data>
+          ) => {
+            const id = `client:newTodo:${tempId++}`;
+            const node = store.create(id, "Todo");
+            node.setValue(text, "text");
+            node.setValue(id, "id");
+            const newEdge = store.create(
+              `client:newEdge:${tempId++}`,
+              "TodoEdge"
+            );
+            newEdge.setLinkedRecord(node, "node");
+            sharedUpdater(store, userId, newEdge);
+
             const userProxy = store.get(userId);
             if (!userProxy) return;
-            console.log(userProxy);
-
-            // get connection record and add edge
-            const connection = ConnectionHandler.getConnection(
-              userProxy,
-              "TodoList_todos"
-            );
-            if (!connection) return;
-            ConnectionHandler.insertEdgeAfter(connection, newEdge);
+            const totalCount = userProxy.getValue("totalCount");
+            if (typeof totalCount !== "number") return;
+            userProxy.setValue(totalCount + 1, "totalCount");
           },
         });
       },
