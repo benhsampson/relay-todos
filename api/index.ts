@@ -5,7 +5,6 @@ import {
 } from "apollo-server-core";
 import http from "http";
 import express from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import env from "./env";
@@ -30,14 +29,6 @@ const context: ContextFunction<ContextParams, Context> = async ({ res }) => {
 
 (async () => {
   const app = express();
-  // app.use(
-  //   cors({
-  //     origin: env.FRONTEND_URL,
-  //     credentials: true,
-  //   })
-  // );
-  app.use(cookieParser());
-  app.set("trust proxy", env.isDev);
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema: Schema,
@@ -46,7 +37,15 @@ const context: ContextFunction<ContextParams, Context> = async ({ res }) => {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();
-  server.applyMiddleware({ app });
+  app.use(cookieParser());
+  app.set("trust proxy", env.isDev);
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: [env.FRONTEND_URL, "https://studio.apollographql.com"],
+      credentials: true,
+    },
+  });
   await new Promise<void>((res) => httpServer.listen({ port: env.PORT }, res));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 })();

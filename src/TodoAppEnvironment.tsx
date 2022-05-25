@@ -22,6 +22,7 @@ async function fetchRelay(
       query: params.text,
       variables,
     }),
+    credentials: "include",
   });
 
   const json = await response.json();

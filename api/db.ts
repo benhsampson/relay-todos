@@ -46,7 +46,6 @@ export const addUser = async (username: string, password: string) => {
 
 export const getUserOrThrow = async (id: string) => {
   await delay();
-  console.log(usersById, id);
   return usersById[id];
 };
 
@@ -85,3 +84,5 @@ export const changeTodoStatus = async (id: string, complete: boolean) => {
   const todo = getTodoOrThrow(id);
   todo.complete = complete;
 };
+
+(async () => await addUser("tester", "pass"))();
