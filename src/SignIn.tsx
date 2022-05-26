@@ -19,11 +19,16 @@ export default function SignIn() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          autoComplete="username"
+        />
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
+          autoComplete="current-password"
         />
         <button type="submit">sign in</button>
         <Link to="/create-user">create user</Link>

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSignOutMutation from "./useSignOutMutation";
 
 export default function Header() {
@@ -6,7 +6,9 @@ export default function Header() {
   const [signOut] = useSignOutMutation(() => navigate("/sign-in"));
   return (
     <header>
-      <h1>todos!</h1>
+      <Link to="/">
+        <h1>todos!</h1>
+      </Link>
       <button onClick={signOut}>sign out</button>
     </header>
   );

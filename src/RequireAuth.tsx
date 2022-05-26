@@ -1,5 +1,6 @@
 // @ts-ignore
 import graphql from "babel-plugin-relay/macro";
+import { Suspense } from "react";
 import { useLazyLoadQuery } from "react-relay";
 import { Navigate, useLocation } from "react-router-dom";
 import { LocationState } from "./LocationState";
@@ -10,7 +11,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function RequireAuthInner(props: Props) {
+function RequireAuthInner(props: Props) {
   const data = useLazyLoadQuery<RequireAuthQuery.RequireAuthQuery>(
     graphql`
       query RequireAuthQuery {
@@ -32,4 +33,12 @@ export default function RequireAuthInner(props: Props) {
     );
 
   return <>{props.children}</>;
+}
+
+export default function RequireAuth(props: Props) {
+  return (
+    <Suspense>
+      <RequireAuthInner {...props} />
+    </Suspense>
+  );
 }
