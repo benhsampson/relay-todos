@@ -10,7 +10,6 @@ const UserQuery: GraphQLFieldConfig<User, Context> = {
   type: GraphQLUser,
   resolve: async (_, __, ctx) => {
     invariant(ctx.userId, "Missing user ID");
-    console.log(ctx.userId);
     return await getUserOrThrow(ctx.userId);
   },
 };

@@ -24,7 +24,7 @@ const useCreateUserMutation = (onSuccess = () => {}) => {
             store.invalidateStore();
           },
           onCompleted: () => {
-            setTimeout(onSuccess, 500);
+            setTimeout(onSuccess, 0);
           },
         });
       },
