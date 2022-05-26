@@ -27,6 +27,9 @@ const context: ContextFunction<ContextParams, Context> = async ({
         maxAge: env.JWT_EXPIRES,
       });
     },
+    signOut: () => {
+      res.clearCookie(env.JWT_COOKIE);
+    },
     userId: req.cookies
       ? req.cookies[env.JWT_COOKIE]
         ? verifyIdToken(req.cookies[env.JWT_COOKIE]).sub

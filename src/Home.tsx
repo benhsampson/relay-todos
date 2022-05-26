@@ -1,7 +1,12 @@
 // @ts-ignore
 import graphql from "babel-plugin-relay/macro";
-import { Suspense, useCallback } from "react";
-import { loadQuery, PreloadedQuery, usePreloadedQuery } from "react-relay";
+import { Suspense, useCallback, useEffect } from "react";
+import {
+  loadQuery,
+  PreloadedQuery,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 import invariant from "tiny-invariant";
 
 import * as HomeQuery from "./__generated__/HomeQuery.graphql";
@@ -52,17 +57,26 @@ function Home(props: Props) {
     </div>
   );
 }
+// const initialQueryRef = loadQuery<HomeQuery.HomeQuery>(
+//   TodoAppEnvironment,
+//   HomeQuery.default,
+//   {}
+// );
 
 export default function IndexWrapper() {
-  const initialQueryRef = loadQuery<HomeQuery.HomeQuery>(
-    TodoAppEnvironment,
-    HomeQuery.default,
-    {}
+  const [queryRef, loadQuery] = useQueryLoader<HomeQuery.HomeQuery>(
+    HomeQuery.default
   );
+
+  useEffect(() => {
+    loadQuery({});
+  }, [loadQuery]);
+
+  if (!queryRef) return null;
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Home initialQueryRef={initialQueryRef} />
+      <Home initialQueryRef={queryRef} />
     </Suspense>
   );
 }

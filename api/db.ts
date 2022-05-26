@@ -31,7 +31,7 @@ const todoIdsByUser: Record<string, string[]> = {};
 let nextTodoId = 0;
 let nextUserId = 0;
 
-const delay = async (delay = 1000) =>
+const delay = async (delay = 250) =>
   await new Promise<void>((resolve) => setTimeout(resolve, delay));
 
 export const addUser = async (username: string, password: string) => {
@@ -45,9 +45,13 @@ export const addUser = async (username: string, password: string) => {
 };
 
 export const getUserOrThrow = async (id: string) => {
-  console.log(usersById);
   await delay();
   return usersById[id];
+};
+
+export const getUserByUsername = async (username: string) => {
+  await delay();
+  return Object.values(usersById).find((user) => user.username === username);
 };
 
 export const addTodo = async (

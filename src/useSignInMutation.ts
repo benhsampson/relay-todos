@@ -2,15 +2,19 @@
 import graphql from "babel-plugin-relay/macro";
 import { useCallback } from "react";
 import { useMutation } from "react-relay";
-import type { useCreateUserMutation as mutationType } from "./__generated__/useCreateUserMutation.graphql";
+import { RecordSourceSelectorProxy } from "relay-runtime";
 
-const useCreateUserMutation = (onSuccess = () => {}) => {
+import {
+  useSignInMutation as mutationType,
+  useSignInMutation$data,
+} from "./__generated__/useSignInMutation.graphql";
+
+const useSignInMutation = (onSuccess = () => {}) => {
   const [commit] = useMutation<mutationType>(graphql`
-    mutation useCreateUserMutation($input: CreateUserInput) {
-      createUser(input: $input) {
+    mutation useSignInMutation($input: SignInInput) {
+      signIn(input: $input) {
         user {
           id
-          username
         }
       }
     }
@@ -18,9 +22,12 @@ const useCreateUserMutation = (onSuccess = () => {}) => {
   return [
     useCallback(
       (username: string, password: string) => {
-        commit({
+        return commit({
           variables: { input: { username, password } },
-          updater: (store) => {
+          updater: (
+            store: RecordSourceSelectorProxy<useSignInMutation$data>
+          ) => {
+            // FIXME: Fix this crude solution
             store.invalidateStore();
           },
           onCompleted: () => {
@@ -33,4 +40,4 @@ const useCreateUserMutation = (onSuccess = () => {}) => {
   ];
 };
 
-export default useCreateUserMutation;
+export default useSignInMutation;

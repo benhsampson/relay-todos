@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import useCreateUserMutation from "./useCreateUserMutation";
+import useSignInMutation from "./useSignInMutation";
 import useGoToFrom from "./useGoToFrom";
 
-export default function CreateUser() {
+export default function SignIn() {
   const [goToFrom] = useGoToFrom();
-  const [createUser] = useCreateUserMutation(goToFrom);
+  const [signIn] = useSignInMutation(goToFrom);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    createUser(username, password);
+    signIn(username, password);
   };
 
   return (
@@ -25,8 +25,8 @@ export default function CreateUser() {
           onChange={(e) => setPassword(e.target.value)}
           type="password"
         />
-        <button type="submit">create</button>
-        <Link to="/sign-in">sign in</Link>
+        <button type="submit">sign in</button>
+        <Link to="/create-user">create user</Link>
       </form>
     </div>
   );

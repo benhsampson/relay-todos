@@ -1,7 +1,7 @@
 import {
+  GraphQLArgumentConfig,
   GraphQLBoolean,
   GraphQLFieldConfig,
-  GraphQLInputFieldConfig,
   GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -42,7 +42,7 @@ const CreateUserMutation: GraphQLFieldConfig<User, Context, Args> = {
       }),
     },
     dryRun: { type: GraphQLBoolean, defaultValue: false },
-  } as Record<keyof Args, GraphQLInputFieldConfig>,
+  } as Record<keyof Args, GraphQLArgumentConfig>,
   resolve: async (_, args, ctx) => {
     createUserSchema.validateSync(args, { abortEarly: false, strict: true });
 

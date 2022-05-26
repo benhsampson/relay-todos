@@ -40,6 +40,8 @@ type Mutation {
   addTodo(input: AddTodoInput!): AddTodoPayload
   changeTodoStatus(input: ChangeTodoStatusInput!): ChangeTodoStatusPayload
   createUser(input: CreateUserInput, dryRun: Boolean = false): CreateUserPayload
+  signIn(input: SignInInput): SignInPayload
+  signOut: Boolean!
 }
 
 """An object with an ID"""
@@ -67,6 +69,15 @@ type Query {
   authenticated: Boolean!
 
   """Fetches a user"""
+  user: User
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}
+
+type SignInPayload {
   user: User
 }
 
