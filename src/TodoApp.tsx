@@ -1,10 +1,12 @@
+import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import CreateUser from "./CreateUser";
 import Header from "./Header";
-import Home from "./Home";
 import RequireAuth from "./RequireAuth";
 import SignIn from "./SignIn";
+
+const HomeRoute = React.lazy(() => import("./Home"));
 
 export default function TodoApp() {
   return (
@@ -16,7 +18,9 @@ export default function TodoApp() {
             path="/"
             element={
               <RequireAuth>
-                <Home />
+                <Suspense fallback={<div>Loading dynamic...</div>}>
+                  <HomeRoute />
+                </Suspense>
               </RequireAuth>
             }
           />

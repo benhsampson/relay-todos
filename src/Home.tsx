@@ -57,20 +57,21 @@ function Home(props: Props) {
     </div>
   );
 }
-// const initialQueryRef = loadQuery<HomeQuery.HomeQuery>(
-//   TodoAppEnvironment,
-//   HomeQuery.default,
-//   {}
-// );
+
+const queryRef = loadQuery<HomeQuery.HomeQuery>(
+  TodoAppEnvironment,
+  HomeQuery.default,
+  {}
+);
 
 export default function IndexWrapper() {
-  const [queryRef, loadQuery] = useQueryLoader<HomeQuery.HomeQuery>(
-    HomeQuery.default
-  );
+  // const [queryRef, loadQuery] = useQueryLoader<HomeQuery.HomeQuery>(
+  //   HomeQuery.default
+  // );
 
-  useEffect(() => {
-    loadQuery({});
-  }, [loadQuery]);
+  // useEffect(() => {
+  //   loadQuery({});
+  // }, [loadQuery]);
 
   if (!queryRef) return null;
 

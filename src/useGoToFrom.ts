@@ -10,7 +10,8 @@ const useGoToFrom = (routeFallback = "/") => {
     useCallback(
       () =>
         navigate(
-          (location.state as LocationState)?.from?.pathname || routeFallback
+          (location.state as LocationState)?.from?.pathname || routeFallback,
+          { replace: true }
         ),
       [navigate, location.state, routeFallback]
     ),
